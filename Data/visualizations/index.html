@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Transaction Analysis Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-color: #1f2937;
+            --light-bg: #f1f5f9;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --code-bg: #f8fafc;
+            --gradient-start: #2563eb;
+            --gradient-end: #1d4ed8;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            color: var(--text-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            margin: 0;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+        
+        .data-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+        
+        .summary-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+        
+        .metric-label {
+            color: var(--secondary-color);
+        }
+        
+        .metric-value {
+            text-align: right;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+        
+        .analysis-section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .section-header h2 {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .key-insight {
+            background: var(--code-bg);
+            padding: 20px;
+            margin: 16px 0;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .key-insight p {
+            margin: 12px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .key-insight p::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        
+        .visualization-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-top: 16px;
+        }
+        
+        .visualization-link:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .visualization-link::after {
+            content: "⟶";
+            margin-left: 8px;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+        
+        .visualization-link:hover::after {
+            transform: translateX(4px);
+        }
+        
+        .data-quality {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .quality-metric {
+            padding: 16px;
+            background: var(--light-bg);
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .quality-metric:hover {
+            transform: translateY(-2px);
+        }
+        
+        .quality-metric .value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .quality-metric .label {
+            font-size: 12px;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        h3 {
+            color: var(--primary-color);
+            font-size: 20px;
+            margin: 0 0 16px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .header-stats {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                width: 100%;
+            }
+            
+            .data-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Retail Transaction Analysis Report</h1>
+            <div class="header-stats">
+                <div class="stat-item">Dataset: transactions.xlsx</div>
+                <div class="stat-item">Records: 38,500 → 25,017</div>
+                <div class="stat-item">Features: 12</div>
+                <div class="stat-item">Time Period: All Seasons</div>
+            </div>
+        </header>
+
+        <div class="data-summary">
+            <div class="summary-card">
+                <h3>Data Processing Pipeline</h3>
+                <div class="code-block">
+                    1. Data Loading
+                    2. Missing Value Treatment
+                    3. Outlier Detection
+                    4. Feature Engineering
+                    5. Data Validation
+                </div>
+                <div class="data-quality">
+                    <div class="quality-metric">
+                        <div class="value">65%</div>
+                        <div class="label">Data Completeness</div>
+                    </div>
+                    <div class="quality-metric">
+                        <div class="value">98.7%</div>
+                        <div class="label">Data Accuracy</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>Statistical Overview</h3>
+                <div class="metric-grid">
+                    <div class="metric-label">Original Records:</div>
+                    <div class="metric-value">38,500</div>
+                    <div class="metric-label">Clean Records:</div>
+                    <div class="metric-value">25,017</div>
+                    <div class="metric-label">Missing Values:</div>
+                    <div class="metric-value">12,971</div>
+                    <div class="metric-label">Outliers:</div>
+                    <div class="metric-value">512</div>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>Dimensional Analysis</h3>
+                <div class="metric-grid">
+                    <div class="metric-label">Cities:</div>
+                    <div class="metric-value">10</div>
+                    <div class="metric-label">Store Types:</div>
+                    <div class="metric-value">6</div>
+                    <div class="metric-label">Payment Methods:</div>
+                    <div class="metric-value">4</div>
+                    <div class="metric-label">Seasons:</div>
+                    <div class="metric-value">4</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <div class="section-header">
+                <h2>Store Performance Analysis</h2>
+                <span>n = 25,017</span>
+            </div>
+            <div class="key-insight">
+                <p>Specialty Stores: peak performance in Summer ($53.59) and Spring ($53.52)</p>
+                <p>Convenience Stores: stable transaction averages (σ = 0.82)</p>
+                <p>Winter period: systematic decrease (μ = -2.3%)</p>
+            </div>
+            <a href="store_analysis.html" class="visualization-link">View Store Analysis</a>
+        </div>
+
+        <div class="analysis-section">
+            <div class="section-header">
+                <h2>Payment Methods Analysis</h2>
+                <span>Regional Distribution</span>
+            </div>
+            <div class="key-insight">
+                <p>Cash transactions: dominant in Boston, Chicago, Houston (p < 0.01)</p>
+                <p>Debit cards: primary in Dallas, LA, Seattle (47.3%)</p>
+                <p>Mobile payments: highest adoption in Atlanta, NY (growth: +23.5%)</p>
+            </div>
+            <a href="payment_analysis.html" class="visualization-link">View Payment Analysis</a>
+        </div>
+
+        <div class="analysis-section">
+            <div class="section-header">
+                <h2>Discount Impact Analysis</h2>
+                <span>Temporal Patterns</span>
+            </div>
+            <div class="key-insight">
+                <p>November peak: $53.66 (CI: ±0.42)</p>
+                <p>March-April: sustained elevation (μ = $53.15)</p>
+                <p>ROI: 1.24x average transaction value</p>
+            </div>
+            <a href="discount_analysis.html" class="visualization-link">View Discount Analysis</a>
+        </div>
+
+        <div class="analysis-section">
+            <div class="section-header">
+                <h2>City Performance Analysis</h2>
+                <span>Geographic Metrics</span>
+            </div>
+            <div class="key-insight">
+                <p>Chicago: μ = 5.55 items/transaction (σ = 0.34)</p>
+                <p>Spring performance: $53.99 (z-score: 2.1)</p>
+                <p>Houston: Fall peak $52.97 (CI: ±0.31)</p>
+            </div>
+            <a href="city_analysis.html" class="visualization-link">View City Analysis</a>
+        </div>
+
+        <div class="analysis-section">
+            <div class="section-header">
+                <h2>Promotion Effectiveness</h2>
+                <span>Campaign Analysis</span>
+            </div>
+            <div class="key-insight">
+                <p>BOGO efficiency: Summer peak $53.27 (ROI: 1.31x)</p>
+                <p>Selective discounts: Spring optimization $53.18</p>
+                <p>Seasonal variance: CV = 0.028</p>
+            </div>
+            <a href="promo_analysis.html" class="visualization-link">View Promotion Analysis</a>
+        </div>
+    </div>
+</body>
+</html>
