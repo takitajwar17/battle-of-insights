@@ -109,7 +109,7 @@ open index.html
 ## Project Structure
 
 ```
-retail-analysis-dashboard/
+@root
 ├── Data/
 │   ├── transactions.xlsx
 │   ├── enhanced_analysis.py
