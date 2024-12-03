@@ -10,6 +10,9 @@ A sophisticated retail analytics platform that transforms raw transaction data i
 
 This project analyzes retail transaction data across multiple dimensions, providing actionable insights through interactive visualizations. The analysis covers store performance, payment methods, discount impact, city performance, and promotion effectiveness.
 
+![image](https://github.com/user-attachments/assets/feb2795f-4517-43c7-87bd-d04f6198a8a3)
+
+
 ### Key Features
 
 - Interactive data visualizations using Plotly
@@ -50,30 +53,40 @@ Our analysis framework consists of five interconnected modules, each providing u
 - Advanced volume distribution analytics with statistical significance
 - Multi-dimensional performance heatmaps for trend identification
 - Time-series analysis with predictive insights
+![image](https://github.com/user-attachments/assets/3278aa02-51fc-4e19-8c31-390c40a7f78e)
+
 
 ### 2. Payment Methods Analysis
 - Sophisticated regional distribution pattern recognition
 - High-value transaction segmentation and analysis
 - Temporal usage trend modeling with seasonal decomposition
 - Customer preference mapping across demographics
+![image](https://github.com/user-attachments/assets/73330def-3626-4758-ad8b-bb6ad219850e)
+
 
 ### 3. Discount Impact Analysis
 - Advanced seasonal effectiveness modeling
 - Comprehensive ROI measurement framework
 - Machine learning-based customer response pattern analysis
 - Data-driven temporal optimization strategies
+![image](https://github.com/user-attachments/assets/035b3361-ee79-4d2c-b69b-bdd1ef599386)
+
 
 ### 4. City Performance Analysis
 - Advanced geographic performance metrics with clustering
 - Multi-variate seasonal variation analysis
 - Transaction pattern recognition using statistical models
 - Competitive regional benchmarking framework
+![image](https://github.com/user-attachments/assets/5eb0c38d-a250-4839-8676-f9eecdd4fbc6)
+
 
 ### 5. Promotion Effectiveness
 - Sophisticated campaign performance metrics
 - AI-driven seasonal optimization
 - Advanced ROI analysis with confidence intervals
 - Customer segment response modeling
+![image](https://github.com/user-attachments/assets/1b6b23af-79cc-4d12-92d0-00e8346f970a)
+
 
 ## Data Overview
 
